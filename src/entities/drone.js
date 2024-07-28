@@ -96,7 +96,7 @@ export const makeDrone = (k, position) => {
 
   drone.on('hurt', () => {
     if (drone.hp() <= 0) {
-      drone.collisionIgnore = ['player'];
+      drone.collisionIgnore = ['player', 'sword-hitbox'];
       drone.unuse('body');
       k.play('boom');
       drone.play('explode');
