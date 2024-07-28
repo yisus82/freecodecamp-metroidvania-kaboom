@@ -8,6 +8,66 @@ export const setBackgroundColor = (k, color) => {
 export const setColliders = (k, map, colliders) => {
   for (const collider of colliders) {
     if (collider.name === 'boss-barrier') {
+      const bossBarrier = map.add([
+        k.rect(collider.width, collider.height),
+        k.color(k.Color.fromHex('#eacfba')),
+        k.pos(collider.x, collider.y),
+        k.area({
+          collisionIgnore: ['collider'],
+        }),
+        k.opacity(0),
+        'boss-barrier',
+        {
+          async activate() {
+            k.tween(this.opacity, 0.3, 1, val => (this.opacity = val), k.easings.linear);
+            await k.tween(
+              k.camPos().x,
+              collider.properties[0].value,
+              1,
+              val => k.camPos(val, k.camPos().y),
+              k.easings.linear
+            );
+          },
+          async deactivate(playerPosX) {
+            k.tween(this.opacity, 0, 1, val => (this.opacity = val), k.easings.linear);
+            await k.tween(
+              k.camPos().x,
+              playerPosX,
+              1,
+              val => k.camPos(val, k.camPos().y),
+              k.easings.linear
+            );
+            k.destroy(this);
+          },
+        },
+      ]);
+
+      bossBarrier.onCollide('player', async player => {
+        if (globalGameState.isBossDefeated) {
+          await bossBarrier.deactivate(player.pos.x);
+          globalGameState.isPlayerInBossFight = false;
+          return;
+        }
+
+        if (globalGameState.isPlayerInBossFight) {
+          return;
+        }
+
+        player.isFrozen = true;
+        player.play('idle');
+        await k.tween(
+          player.pos.x,
+          player.pos.x + 25,
+          0.2,
+          val => (player.pos.x = val),
+          k.easings.linear
+        );
+        await bossBarrier.activate();
+        bossBarrier.use(k.body({ isStatic: true }));
+        globalGameState.isPlayerInBossFight = true;
+        player.isFrozen = false;
+      });
+
       continue;
     }
 
