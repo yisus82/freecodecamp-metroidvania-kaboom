@@ -1,6 +1,12 @@
 import { makePlayer } from '../entities/player.js';
 import { globalGameState } from '../state/globalGameState.js';
-import { setBackgroundColor, setCamera, setCameraZones, setColliders } from './roomUtils.js';
+import {
+  setBackgroundColor,
+  setCamera,
+  setCameraZones,
+  setColliders,
+  setDrones,
+} from './roomUtils.js';
 
 const room1 = (k, roomData) => {
   globalGameState.currentScene = 'room1';
@@ -22,6 +28,12 @@ const room1 = (k, roomData) => {
 
   setCamera(k, player, map, roomData);
   setCameraZones(k, map, layerObjects.cameras);
+
+  setDrones(
+    k,
+    map,
+    layerObjects.positions.filter(position => position.type === 'drone')
+  );
 };
 
 export default room1;

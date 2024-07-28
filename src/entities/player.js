@@ -12,12 +12,12 @@ export const makePlayer = (k, position) => {
     k.doubleJump(globalGameState.isDoubleJumpUnlocked ? 2 : 1),
     k.opacity(),
     k.health(globalGameState.playerHP),
+    'player',
     {
       speed: 150,
       isAttacking: false,
       isFrozen: false,
     },
-    'player',
   ]);
 
   player.onAnimEnd(anim => {
@@ -62,6 +62,10 @@ export const makePlayer = (k, position) => {
     if (player.pos.y > 1000) {
       k.go(globalGameState.currentScene);
     }
+  });
+
+  player.on('hurt', () => {
+    console.log('Player was hurt!');
   });
 
   k.onKeyPress(key => {

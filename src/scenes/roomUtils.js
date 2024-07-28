@@ -1,3 +1,4 @@
+import { makeDrone } from '../entities/drone.js';
 import { globalGameState } from '../state/globalGameState.js';
 
 export const setBackgroundColor = (k, color) => {
@@ -61,5 +62,11 @@ export const setCameraZones = (k, map, cameras) => {
         k.tween(k.camPos().y, camPosY, 0.8, val => k.camPos(k.camPos().x, val), k.easings.linear);
       }
     });
+  }
+};
+
+export const setDrones = (k, map, drones) => {
+  for (const drone of drones) {
+    map.add(makeDrone(k, k.vec2(drone.x, drone.y)));
   }
 };
