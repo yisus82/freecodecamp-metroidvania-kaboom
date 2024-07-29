@@ -1,6 +1,7 @@
 import { makeBoss } from '../entities/boss.js';
 import { makePlayer } from '../entities/player.js';
 import { globalGameState } from '../state/globalGameState.js';
+import { makeHealthBar } from '../ui/healthBar.js';
 import {
   setBackgroundColor,
   setCamera,
@@ -23,8 +24,11 @@ const room1 = (k, roomData) => {
   }, {});
   setColliders(k, map, layerObjects.colliders);
 
+  const healthBar = makeHealthBar(k);
+  map.add(healthBar);
+
   const playerPosition = layerObjects.positions.find(position => position.name === 'player');
-  const player = makePlayer(k, playerPosition);
+  const player = makePlayer(k, playerPosition, healthBar);
   map.add(player);
   k.setGravity(1000);
 

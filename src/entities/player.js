@@ -1,6 +1,6 @@
 import { globalGameState } from '../state/globalGameState.js';
 
-export const makePlayer = (k, position) => {
+export const makePlayer = (k, position, healthBar) => {
   const player = k.make([
     k.pos(position.x, position.y),
     k.sprite('player'),
@@ -11,7 +11,7 @@ export const makePlayer = (k, position) => {
     k.body({ mass: 100, jumpForce: 320 }),
     k.doubleJump(globalGameState.isDoubleJumpUnlocked ? 2 : 1),
     k.opacity(1),
-    k.health(globalGameState.playerHP),
+    k.health(globalGameState.playerHP, globalGameState.maxPlayerHP),
     'player',
     {
       speed: 150,
@@ -69,15 +69,16 @@ export const makePlayer = (k, position) => {
 
   player.on('heal', () => {
     globalGameState.playerHP = player.hp();
+    healthBar.trigger('update');
   });
 
   player.on('hurt', async () => {
-    globalGameState.playerHP = player.hp();
-
-    if (globalGameState.playerHP <= 0) {
+    if (player.hp() <= 0) {
       k.play('boom');
       player.play('explode');
     } else {
+      globalGameState.playerHP = player.hp();
+      healthBar.trigger('update');
       for (let i = 0; i < 2; i++) {
         await k.tween(player.opacity, 0, 0.1, val => (player.opacity = val), k.easings.linear);
         await k.wait(0.1);
