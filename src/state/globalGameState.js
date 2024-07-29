@@ -5,4 +5,5 @@ export const globalGameState = {
   isPlayerInBossFight: false,
   isBossDefeated: false,
   currentScene: null,
+  exitName: null,
 };

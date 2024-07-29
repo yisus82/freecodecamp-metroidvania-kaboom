@@ -9,7 +9,7 @@ export const makeHealthBar = k => {
   ]);
 
   healthBar.on('update', () => {
-    if (globalGameState.playerHP === 0) {
+    if (globalGameState.playerHP <= 0) {
       k.destroy(healthBar);
       return;
     }

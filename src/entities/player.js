@@ -61,7 +61,7 @@ export const makePlayer = (k, position, healthBar) => {
 
   player.onUpdate(() => {
     if (player.pos.y > 1000) {
-      k.go(globalGameState.currentScene);
+      k.go(globalGameState.currentScene, { exitName: globalGameState.exitName });
     } else if (player.pos.y < 0) {
       player.pos.y = 0;
     }
