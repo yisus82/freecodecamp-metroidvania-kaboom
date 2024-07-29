@@ -10,7 +10,7 @@ export const makePlayer = (k, position) => {
     k.anchor('center'),
     k.body({ mass: 100, jumpForce: 320 }),
     k.doubleJump(globalGameState.isDoubleJumpUnlocked ? 2 : 1),
-    k.opacity(),
+    k.opacity(1),
     k.health(globalGameState.playerHP),
     'player',
     {
@@ -32,6 +32,7 @@ export const makePlayer = (k, position) => {
     }
 
     if (anim === 'explode') {
+      globalGameState.playerHP = globalGameState.maxPlayerHP;
       k.go('room1');
     }
   });
@@ -61,11 +62,18 @@ export const makePlayer = (k, position) => {
   player.onUpdate(() => {
     if (player.pos.y > 1000) {
       k.go(globalGameState.currentScene);
+    } else if (player.pos.y < 0) {
+      player.pos.y = 0;
     }
   });
 
   player.on('hurt', () => {
-    console.log('Player was hurt!');
+    globalGameState.playerHP = player.hp();
+
+    if (globalGameState.playerHP <= 0) {
+      k.play('boom');
+      player.play('explode');
+    }
   });
 
   k.onKeyPress(key => {
@@ -89,6 +97,7 @@ export const makePlayer = (k, position) => {
         'sword-hitbox',
       ]);
       player.play('attack');
+      k.play('sword');
       return;
     }
   });

@@ -1,3 +1,4 @@
+import { makeBoss } from '../entities/boss.js';
 import { makePlayer } from '../entities/player.js';
 import { globalGameState } from '../state/globalGameState.js';
 import {
@@ -34,6 +35,12 @@ const room1 = (k, roomData) => {
     map,
     layerObjects.positions.filter(position => position.type === 'drone')
   );
+
+  if (!globalGameState.isBossDefeated) {
+    const bossPosition = layerObjects.positions.find(position => position.name === 'boss');
+    const boss = makeBoss(k, bossPosition);
+    map.add(boss);
+  }
 };
 
 export default room1;

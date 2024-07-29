@@ -1,6 +1,6 @@
 import kaboom from '../lib/kaboom/kaboom.mjs';
 
-export const k = kaboom({
+const k = kaboom({
   width: 640 * 2,
   height: 360 * 2,
   scale: 2,
@@ -83,6 +83,9 @@ k.loadSound('boom', './assets/sounds/boom.wav');
 k.loadSound('flamethrower', './assets/sounds/flamethrower.mp3');
 k.loadSound('health', './assets/sounds/health.wav');
 k.loadSound('notify', './assets/sounds/notify.mp3');
+k.loadSound('sword', './assets/sounds/sword.wav');
 
 k.loadSprite('room1', './assets/maps/room1.png');
 k.loadSprite('room2', './assets/maps/room2.png');
+
+export default k;
