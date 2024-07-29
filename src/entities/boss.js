@@ -1,4 +1,5 @@
 import { globalGameState } from '../state/globalGameState.js';
+import { makeNotificationBox } from '../ui/notificationBox.js';
 
 export const makeBoss = (k, position) => {
   const boss = k.make([
@@ -109,6 +110,11 @@ export const makeBoss = (k, position) => {
       boss.play('explode');
       globalGameState.isDoubleJumpUnlocked = true;
       player.numJumps = 2;
+      k.play('notify');
+      const notification = k.add(
+        makeNotificationBox(k, 'You unlocked a new ability!\nYou can now double jump.')
+      );
+      k.wait(3, () => notification.close());
     } else {
       for (let i = 0; i < 2; i++) {
         await k.tween(boss.opacity, 0, 0.1, val => (boss.opacity = val), k.easings.linear);
