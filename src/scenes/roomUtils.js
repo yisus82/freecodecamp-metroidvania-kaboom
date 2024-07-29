@@ -1,3 +1,4 @@
+import { makeCartridge } from '../entities/cartridge.js';
 import { makeDrone } from '../entities/drone.js';
 import { globalGameState } from '../state/globalGameState.js';
 
@@ -128,5 +129,11 @@ export const setCameraZones = (k, map, cameras) => {
 export const setDrones = (k, map, drones) => {
   for (const drone of drones) {
     map.add(makeDrone(k, k.vec2(drone.x, drone.y)));
+  }
+};
+
+export const setCartridges = (k, map, cartridges) => {
+  for (const cartridge of cartridges) {
+    map.add(makeCartridge(k, k.vec2(cartridge.x, cartridge.y)));
   }
 };

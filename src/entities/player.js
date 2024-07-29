@@ -67,6 +67,10 @@ export const makePlayer = (k, position) => {
     }
   });
 
+  player.on('heal', () => {
+    globalGameState.playerHP = player.hp();
+  });
+
   player.on('hurt', async () => {
     globalGameState.playerHP = player.hp();
 

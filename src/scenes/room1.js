@@ -5,6 +5,7 @@ import {
   setBackgroundColor,
   setCamera,
   setCameraZones,
+  setCartridges,
   setColliders,
   setDrones,
 } from './roomUtils.js';
@@ -34,6 +35,12 @@ const room1 = (k, roomData) => {
     k,
     map,
     layerObjects.positions.filter(position => position.type === 'drone')
+  );
+
+  setCartridges(
+    k,
+    map,
+    layerObjects.positions.filter(position => position.type === 'cartridge')
   );
 
   if (!globalGameState.isBossDefeated) {
