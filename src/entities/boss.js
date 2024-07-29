@@ -99,7 +99,7 @@ export const makeBoss = (k, position) => {
     boss.hurt(1);
   });
 
-  boss.on('hurt', () => {
+  boss.on('hurt', async () => {
     if (boss.hp() <= 0) {
       globalGameState.isBossDefeated = true;
       boss.enterState('defeated');
@@ -109,6 +109,13 @@ export const makeBoss = (k, position) => {
       boss.play('explode');
       globalGameState.isDoubleJumpUnlocked = true;
       player.numJumps = 2;
+    } else {
+      for (let i = 0; i < 2; i++) {
+        await k.tween(boss.opacity, 0, 0.1, val => (boss.opacity = val), k.easings.linear);
+        await k.wait(0.1);
+        await k.tween(boss.opacity, 1, 0.1, val => (boss.opacity = val), k.easings.linear);
+        await k.wait(0.1);
+      }
     }
   });
 

@@ -67,12 +67,19 @@ export const makePlayer = (k, position) => {
     }
   });
 
-  player.on('hurt', () => {
+  player.on('hurt', async () => {
     globalGameState.playerHP = player.hp();
 
     if (globalGameState.playerHP <= 0) {
       k.play('boom');
       player.play('explode');
+    } else {
+      for (let i = 0; i < 2; i++) {
+        await k.tween(player.opacity, 0, 0.1, val => (player.opacity = val), k.easings.linear);
+        await k.wait(0.1);
+        await k.tween(player.opacity, 1, 0.1, val => (player.opacity = val), k.easings.linear);
+        await k.wait(0.1);
+      }
     }
   });
 
